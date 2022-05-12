@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Username & PassWord Sheet</title>
+    <link rel="stylesheet" href="index.css" />
+    <script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+
+<div >
+    <h1 class="header">Username & Password Sheet</h1>
+</div>
+
+<div class="input-text">
+    <img src="../username-and-password-sheet/user.jpg"  style="padding: 1rem; height: 7rem; opacity: .8; " />
+    <h3> Sign-in With Your Pin Code : </h3>
+    <form id="loginChild"> 
+        <input  type="password" name="pin" maxlength="4" placeholder="4-Digit PIN " class="input-text" pattern="[0-9.]+" >
+        <input  type="submit" name="submitPin" value="Sign-In" class="input-text"/> 
+    </form>
+</div>
+
+<div class="displayInline" >
+    <form class="element">
+        <label>Website :</label>
+            <input id="web" type="text" name="web" placeholder="Add Website" required/>
+        <br>
+        <label >Username or Email :</label>
+            <input id="user" type="text" name="username" placeholder="Add Username or Email" required>
+        <br>
+        <label>Password :</label>
+            <input id="pass" type="password" name="password" placeholder="Add password" required/>
+        <br>
+        <label>Confirm Password :</label>
+             <input id="passCon" type="password" name="password-confirm" placeholder="Confirm password" required> 
+        <br>
+            <button id="addToElement" type="submit" name="addToList" > Add to List</button>   
+    </form>
+</div>
+
+<div class="displayInline">
+    <button id="addElement">Add Element</button>
+    <button id="logOut" >Logout</button>  
+    <table id="elemTable">
+        <tr>
+            <th>Website </th>
+            <th>Username </th>
+            <th>Password </th>
+            <th></th>
+        </tr>    
+        <tr>
+            <td class="website">www.facebook.com</td>
+            <td class="username">youba</td>
+            <td class="password">1234</td>
+            <td>
+                <button id="Delete">Delete</button>
+            </td>
+        </tr>    
+        </table>
+</div>
+
+</body>
+<footer>
+<P style="text-align: center;">Made By Youba IDJIS a Flatiron School Student </P>
+</footer>
+</html>
