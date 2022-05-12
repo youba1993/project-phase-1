@@ -1,9 +1,8 @@
+
 const init = ()=>{
-    const submitForm = document.getElementById("loginChild");
-    const submitPin = document.querySelector('input[name="submitPin"]')
-    const inputPin = document.querySelector('input[name="pin"]')
       //Login 
-      submitForm.addEventListener("submit", (e)=> { 
+      document.getElementById("loginChild").addEventListener("submit", (e)=> { 
+        const inputPin = document.querySelector('input[name="pin"]')
           e.preventDefault();
           if ( parseInt(inputPin.value)  === 1111){ // Verifie Pin code .. use 1111 to have acces 
             login();
@@ -14,48 +13,58 @@ const init = ()=>{
         }
       })
       //Logout
-    const btnLogOut = document.getElementById("logOut").addEventListener("click", ()=>location.reload());
+     document.getElementById("logOut").addEventListener("click", ()=>location.reload());
      //Add form Element
-    const btnAddElem = document.getElementById("addElement").addEventListener("click", addElementF);      
+     document.getElementById("addElement").addEventListener("click", addElementF);      
      //add To List 
-    let btnToList = document.querySelector(".element");
-     btnToList.addEventListener("submit", (ev)=>{
-        ev.preventDefault();
-        addToElementList();
-        btnToList.reset();
-    });
-     //Delete element from List
-    let btnDelete = document.getElementById("Delete")
-      btnDelete.addEventListener("click", (e)=> {
+    document.querySelector(".element").addEventListener("submit",addToElementList);
+      
+    // upload JSON 
+    fetch("http://localhost:3000/elementListItem")
+        .then((resp)=> resp.json())
+        .then((upSheet) => {upSheet.forEach((elemet)=> setRow(elemet.site,elemet.user,elemet.password))}) 
+    //Delete element from List
+    document.getElementById("Delete").addEventListener("click", (e)=> {
         e.preventDefault();
-        deleteElementList(btnDelete);
-    })  
-
-    
+        e.target.parentElement.parentElement.remove()
+        //deleteElementList(elementObj);
+    })       
 }
+  
 
 document.addEventListener("DOMContentLoaded",init); 
 
 function login(){
     const authDiv = document.querySelector(".input-text");
-        authDiv.setAttribute("style","display :none;"); // hide the authentification div
-        alert("Welcome");  //welcome in message    
+        authDiv.setAttribute("style","display :none;"); // hide the authentification div    
         const authSuccess = document.querySelectorAll(".displayInline").forEach(el=>el.style.visibility = "visible"); // have access to the functionality by set in them visible 
         
     }
 function addElementF(){ // set form visible
     const formElement = document.querySelector(".element").style.visibility = "visible"; 
 }
-function addToElementList(){
-    const idweb = document.getElementById("web");
-    const iduser = document.getElementById("user");  
-    const idpass = document.getElementById("pass"); 
-    const idpassCon = document.getElementById("passCon");
+function addToElementList(e){
+    e.preventDefault()
+    let elementObj = {
+        site: e.target.web.value,
+        user: e.target.username.value,
+        password: e.target.password.value
+    }
+    let idpassCon = e.target.passwordconfirm.value;
+            if (elementObj.password == idpassCon){
+                addElementTOdb(elementObj);
+                setRow(elementObj.site,elementObj.user,elementObj.password);
+                this.reset();
+                
+        }else{
+            alert("password don't match");
+        } 
+        
+}
+function setRow(parWeb,parUser,parPass){
     const btn = document.createElement("button");
     btn.innerText = "Delete"
-        if (idpass.value == idpassCon.value){
-
-            let table = document.getElementById("elemTable"); 
+    let table = document.getElementById("elemTable"); 
                 //create an arrow and set cells
             let row = table.insertRow();   
             let cell1 = row.insertCell(0)
@@ -63,18 +72,42 @@ function addToElementList(){
             let cell3 = row.insertCell(2)
             let cell4 = row.insertCell(3)
                 //insert the data to the table 
-            cell1.innerHTML = idweb.value;
-            cell2.innerHTML = iduser.value;
-            cell3.innerHTML = idpass.value;
+            cell1.innerHTML = parWeb;
+            cell2.innerHTML = parUser;
+            cell3.innerHTML = parPass;
             cell4.appendChild(btn).setAttribute("id","Delete")
+}
+function deleteElementList(elementObj){
+   
+   fetch(`http://localhost:3000/elementListItem/${elementObj.id}`,{
+    method: 'DELETE',
+    Headers: {
+        'Content-Type' : 'application/json',
+        Accept: 'application/json',
+    }
+})
+}
+function addElementTOdb(elementObj){
+           //add element to db.json
+           
+    fetch("http://localhost:3000/elementListItem",{
+        method: 'POST',
+        Headers: {
+            'Content-Type' : 'application/json',
+            Accept: 'application/json',
+        },
+        body:JSON.stringify(elementObj),// console.log(JSON.stringify(Obj)) gives the right full object but fetch create just id in the database JSON
+    })
+            .then(response => response.json())
+            .then(data => {
+             console.log('Success:', data);
+             })
+             .catch((error) => {
+             console.error('Error:', error);
+            });
+}
 
-        }else{
-            alert("password d'ont match");
-        }
-}
-function deleteElementList(btnclicked){
-   btnclicked.parentElement.parentElement.remove()
-}
+ 
 
   
 
