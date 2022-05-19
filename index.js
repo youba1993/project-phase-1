@@ -14,11 +14,11 @@ const init = ()=>{
       })
       //Logout
      document.getElementById("logOut").addEventListener("click", ()=>location.reload());
-     //Add form Element
-     document.getElementById("addElement").addEventListener("click", addElementF);      
+     //Add form Element 
+          document.getElementById("addElement").addEventListener("click", addElementF);      
      //add To List 
     document.querySelector(".element").addEventListener("submit",addToElementList);
-      
+    
     // upload JSON 
     fetch("http://localhost:3000/elementListItem")
         .then((resp)=> resp.json())
@@ -27,7 +27,7 @@ const init = ()=>{
     document.getElementById("Delete").addEventListener("click", (e)=> {
         e.preventDefault();
         e.target.parentElement.parentElement.remove()
-        //deleteElementList(elementObj);
+        deleteElementList(elementObj);
     })       
 }
   
@@ -46,9 +46,9 @@ function addElementF(){ // set form visible
 function addToElementList(e){
     e.preventDefault()
     let elementObj = {
-        site: e.target.web.value,
-        user: e.target.username.value,
-        password: e.target.password.value
+        "site": e.target.web.value,
+        "user": e.target.username.value,
+        "password": e.target.password.value
     }
     let idpassCon = e.target.passwordconfirm.value;
             if (elementObj.password == idpassCon){
@@ -81,7 +81,7 @@ function deleteElementList(elementObj){
    
    fetch(`http://localhost:3000/elementListItem/${elementObj.id}`,{
     method: 'DELETE',
-    Headers: {
+    headers: {
         'Content-Type' : 'application/json',
         Accept: 'application/json',
     }
@@ -89,14 +89,13 @@ function deleteElementList(elementObj){
 }
 function addElementTOdb(elementObj){
            //add element to db.json
-           
-    fetch("http://localhost:3000/elementListItem",{
+    fetch("http://localhost:3000/elementListItem/",{
         method: 'POST',
-        Headers: {
-            'Content-Type' : 'application/json',
-            Accept: 'application/json',
+        headers: {
+            'Content-Type' : 'application/json'
+           
         },
-        body:JSON.stringify(elementObj),// console.log(JSON.stringify(Obj)) gives the right full object but fetch create just id in the database JSON
+        body:JSON.stringify(elementObj),        // console.log(JSON.stringify(Obj)) gives the right full object but fetch create just id in the database JSON
     })
             .then(response => response.json())
             .then(data => {
