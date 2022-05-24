@@ -13,34 +13,10 @@
       "id": 1
     },
     {
-      "site": "www.google.com",
-      "user": "youba@gmail.com",
-      "password": "123NY",
+      "site": "www.bank.com",
+      "user": "youba@bank",
+      "password": "123",
       "id": 2
-    },
-    {
-      "site": "www.hotmail.com",
-      "user": "yougo@hotmail.com",
-      "password": "123TX",
-      "id": 3
-    },
-    {
-      "password": "1234",
-      "site": "www.yahoo.com",
-      "user": "youba",
-      "id": 8
-    },
-    {
-      "site": "www.yahoo.com",
-      "user": "youba",
-      "password": "123",
-      "id": 14
-    },
-    {
-      "site": "www.yahoo.com",
-      "user": "thompson",
-      "password": "123",
-      "id": 15
     }
   ]
 }

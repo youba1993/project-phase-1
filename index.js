@@ -1,4 +1,3 @@
-
 const init = ()=>{
       //Login 
       document.getElementById("loginChild").addEventListener("submit", (e)=> { 
@@ -22,13 +21,8 @@ const init = ()=>{
     // upload JSON 
     fetch("http://localhost:3000/elementListItem")
         .then((resp)=> resp.json())
-        .then((upSheet) => {upSheet.forEach((elemet)=> setRow(elemet.site,elemet.user,elemet.password))}) 
-    //Delete element from List
-    document.getElementById("Delete").addEventListener("click", (e)=> {
-        e.preventDefault();
-        e.target.parentElement.parentElement.remove()
-        deleteElementList(elementObj);
-    })       
+        .then((upSheet) => {upSheet.forEach((elemet)=> setRow(elemet))}) 
+          
 }
   
 
@@ -53,7 +47,7 @@ function addToElementList(e){
     let idpassCon = e.target.passwordconfirm.value;
             if (elementObj.password == idpassCon){
                 addElementTOdb(elementObj);
-                setRow(elementObj.site,elementObj.user,elementObj.password);
+                setRow(elementObj);
                 this.reset();
                 
         }else{
@@ -61,22 +55,26 @@ function addToElementList(e){
         } 
         
 }
-function setRow(parWeb,parUser,parPass){
-    const btn = document.createElement("button");
-    btn.innerText = "Delete"
-    let table = document.getElementById("elemTable"); 
-                //create an arrow and set cells
-            let row = table.insertRow();   
-            let cell1 = row.insertCell(0)
-            let cell2 = row.insertCell(1)
-            let cell3 = row.insertCell(2)
-            let cell4 = row.insertCell(3)
-                //insert the data to the table 
-            cell1.innerHTML = parWeb;
-            cell2.innerHTML = parUser;
-            cell3.innerHTML = parPass;
-            cell4.appendChild(btn).setAttribute("id","Delete")
+function setRow(element){
+    let table = document.createElement("tr")
+    table.id = element.id
+    table.innerHTML = `
+    
+            <td>${element.site}</td>
+            <td>${element.user}</td>
+            <td>${element.password}</td>
+            <td>
+            <button id="Delete">Delete</button>
+            </td>
+            
+    ` 
+    document.getElementById("elemTable").appendChild(table)
+    table.querySelector('#Delete').addEventListener("click", ()=>{
+        deleteElementList(element)
+        location.reload();
+    })
 }
+
 function deleteElementList(elementObj){
    
    fetch(`http://localhost:3000/elementListItem/${elementObj.id}`,{
@@ -95,8 +93,8 @@ function addElementTOdb(elementObj){
             'Content-Type' : 'application/json'
            
         },
-        body:JSON.stringify(elementObj),        // console.log(JSON.stringify(Obj)) gives the right full object but fetch create just id in the database JSON
-    })
+        body:JSON.stringify(elementObj),      
+        })
             .then(response => response.json())
             .then(data => {
              console.log('Success:', data);
