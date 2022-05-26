@@ -7,16 +7,16 @@ const init = ()=>{
             login();
         }
         else{
-            alert("Wrong Pin code ");  // show an error message and refresh the page 
+            alert("Wrong Pin code, Try Again ");  // show an error message and refresh the page 
             location.reload();
         }
       })
       //Logout
      document.getElementById("logOut").addEventListener("click", ()=>location.reload());
      //Add form Element 
-          document.getElementById("addElement").addEventListener("click", addElementF);      
+          document.getElementById("addElement").addEventListener("click", addElementF); //eventListner 1  `click`     
      //add To List 
-    document.querySelector(".element").addEventListener("submit",addToElementList);
+    document.querySelector(".element").addEventListener("submit",addToElementList);   // //eventListner 2 `submit`
     
     // upload JSON 
     fetch("http://localhost:3000/elementListItem")
@@ -26,7 +26,7 @@ const init = ()=>{
 }
   
 
-document.addEventListener("DOMContentLoaded",init); 
+document.addEventListener("DOMContentLoaded",init);  // //eventListner 3 `DOMContentLoaded`
 
 function login(){
     const authDiv = document.querySelector(".input-text");
@@ -69,14 +69,15 @@ function setRow(element){
             
     ` 
     document.getElementById("elemTable").appendChild(table)
-    table.querySelector('#Delete').addEventListener("click", ()=>{
+
+    table.querySelector('#Delete').addEventListener("click", (e)=>{
         deleteElementList(element)
-        location.reload();
+        e.target.parentElement.parentElement.remove()
     })
 }
 
 function deleteElementList(elementObj){
-   
+        // delete element from db.json
    fetch(`http://localhost:3000/elementListItem/${elementObj.id}`,{
     method: 'DELETE',
     headers: {
