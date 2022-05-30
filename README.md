@@ -1,7 +1,7 @@
 # project-phase-1
 Configuration : 
 
-    - use the Linux, Ios terminal or Ubuntu on Windows and go to project directorie.
+    - use the Linux, iOS terminal or Ubuntu on Windows and go to project directorie.
     - type $json-server --watch db.json
             in the terminal to start json server.
     - open index.html file in a browser.
